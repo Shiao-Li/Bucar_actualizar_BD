@@ -16,6 +16,7 @@ public class buscar_actualizar {
     private JButton actualizarButton;
     private JPanel buscar_actualizar;
     Statement ps;
+    PreparedStatement pss;
 
 
     public buscar_actualizar() {
@@ -61,9 +62,8 @@ public class buscar_actualizar {
 
                     while (rs.next()){
                         ingresarNombre.setText(rs.getString("Nombre"));
-                        ingresarCorreo.setText(rs.getString("Celular"));
-                        ingresarCelular.setText(rs.getString("Correo"));
-
+                        ingresarCorreo.setText(rs.getString("Correo"));
+                        ingresarCelular.setText(rs.getString("Celular"));
                     }
 
 
@@ -76,7 +76,37 @@ public class buscar_actualizar {
         actualizarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Connection con;
 
+                try{
+                    con = getConection();
+                    pss = con.prepareStatement("UPDATE usuario SET nombre = ?, celular = ?, correo = ? WHERE id ="+ingresarID.getText() );
+                    try{
+
+                        pss.setString(1, ingresarNombre.getText());
+                        pss.setString(2, ingresarCelular.getText());
+                        pss.setString(3, ingresarCorreo.getText());
+
+
+                    }catch (SQLException es){
+                        System.out.println("Error: " + es + "||||");
+                        JOptionPane.showMessageDialog(null,"Ingrese bien los datos");
+                    }
+
+
+                    System.out.println(ps);
+                    int res = pss.executeUpdate();
+
+                    if(res > 0){
+                        JOptionPane.showMessageDialog(null, "Persona modificada correctamente");
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Persona no modificada");
+                    }
+                    con.close();
+
+                }catch (HeadlessException | SQLException f){
+                    System.out.println(f);
+                }
             }
         });
     }
