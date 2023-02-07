@@ -81,18 +81,10 @@ public class buscar_actualizar {
                 try{
                     con = getConection();
                     pss = con.prepareStatement("UPDATE usuario SET nombre = ?, celular = ?, correo = ? WHERE id ="+ingresarID.getText() );
-                    try{
 
                         pss.setString(1, ingresarNombre.getText());
                         pss.setString(2, ingresarCelular.getText());
                         pss.setString(3, ingresarCorreo.getText());
-
-
-                    }catch (SQLException es){
-                        System.out.println("Error: " + es + "||||");
-                        JOptionPane.showMessageDialog(null,"Ingrese bien los datos");
-                    }
-
 
                     System.out.println(ps);
                     int res = pss.executeUpdate();
